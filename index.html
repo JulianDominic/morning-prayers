@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Morning Prayers</title>
+  <script src="script.js"></script>
+</head>
+
+<body onload="loadNames();">
+  <h1>Morning Prayers</h1>
+  <div id="main">
+    <div id="input-area">
+      <textarea></textarea>
+      <div id="buttons">
+        <button id="generate-one" onclick="handleGenerateOne()">Generate (today)</button>
+        <button id="generate-week" onclick="handleGenerateWeek()">Generate (week)</button>
+      </div>
+    </div>
+    <div id="output-area">
+    </div>
+  </div>
+</body>
+
+</html>
