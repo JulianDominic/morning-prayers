@@ -64,3 +64,10 @@ td {
   padding: 8px;
   border: 1px solid #ddd;
 }
+
+.errorMessage {
+  color: red;
+  font-weight: 700;
+  padding: 0;
+  margin: 0;
+}

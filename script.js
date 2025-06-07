@@ -14,30 +14,32 @@ function loadNames() {
 }
 
 function handleGenerateOne() {
+  var outputArea = document.getElementById("output-area");
+  clearTables(outputArea);
+
+  showErrorMessage("");
   const names = getNames();
   // check if the input is valid
   if (names.length < 4) {
-    console.log("Not enough names! At least 4")
+    showErrorMessage("ERROR: Need at least 4 names!")
     return;
   }
-
-  var outputArea = document.getElementById("output-area");
-  clearTables(outputArea);
 
   const table = createTable(names);
   outputArea.appendChild(table);
 }
 
 function handleGenerateWeek() {
+  var outputArea = document.getElementById("output-area");
+  clearTables(outputArea);
+
+  showErrorMessage("");
   const names = getNames();
   // check if the input is valid
   if (names.length < 4) {
-    console.log("Not enough names! At least 4")
+    showErrorMessage("ERROR: Need at least 4 names!")
     return;
   }
-
-  var outputArea = document.getElementById("output-area");
-  clearTables(outputArea);
 
   for (let i = 0; i < DAYS.length; i++) {
     const table = createTable(names, DAYS.at(i));
@@ -92,4 +94,18 @@ function getRandomName(names, blockedNames) {
     idx = Math.floor(Math.random() * names.length);
   }
   return names.at(idx);
+}
+
+function showErrorMessage(error) {
+  var errorArea = document.getElementById("error");
+  
+  let currentErrors = Array.from(errorArea.children);
+  for (let i = 0; i < currentErrors.length; i++) {
+    errorArea.removeChild(currentErrors.at(i));
+  }
+
+  const errorMessage = document.createElement("p");
+  errorMessage.textContent = error;
+  errorMessage.className = "errorMessage";
+  errorArea.appendChild(errorMessage);
 }
