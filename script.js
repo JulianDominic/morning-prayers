@@ -2,13 +2,13 @@ const ROLES = ["Lead", "Response", "Reading", "Intercess"];
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
+const NAMES = ["Joel", "Mike", "Dion", "Gareth", "Jiahao", "Haroun", "Julian", "Eugene", "Timothy", "Krysten", "Jordon"]
+
 function loadNames() {
-  const NAMES = ["Joel", "Mike", "Dion", "Gareth", "Jiahao", "Haroun", "Julian", "Eugene", "Timothy", "Krysten"]
   let initStr = "";
   for (let i = 0; i < NAMES.length; i++) {
     initStr = initStr.concat(NAMES.at(i), "\n");
   }
-  console.log(initStr);
   const textarea = document.querySelector("textarea");
   textarea.value = initStr;
 }
@@ -41,8 +41,18 @@ function handleGenerateWeek() {
     return;
   }
 
-  for (let i = 0; i < DAYS.length; i++) {
-    const table = createTable(names, DAYS.at(i));
+  let isAtLeastOnce = false;
+  let tables = [];
+  while (!isAtLeastOnce) {
+    tables = [];
+    for (let i = 0; i < DAYS.length; i++) {
+      const table = createTable(names, DAYS.at(i));
+      tables.push(table);
+    }
+    isAtLeastOnce = atLeastOnce(tables);
+  }
+
+  for (let table of tables) {
     outputArea.appendChild(table);
   }
 }
@@ -78,6 +88,7 @@ function createTable(names, headerText="Today") {
 
     const nameCell = document.createElement("td");
     const randomName = getRandomName(names, blockedNames);
+    nameCell.className = "name";
     nameCell.textContent = randomName;
     blockedNames.push(randomName);
 
@@ -108,4 +119,28 @@ function showErrorMessage(error) {
   errorMessage.textContent = error;
   errorMessage.className = "errorMessage";
   errorArea.appendChild(errorMessage);
+}
+
+function atLeastOnce(tables) {
+  let freq = {};
+  for (let name of NAMES) {
+    freq[name] = 0;
+  }
+
+  for (let table of tables) {
+    const nameCells = Array.from(table.getElementsByClassName("name"));
+    const names = nameCells.map((x) => x.textContent);
+    console.log(names);
+    for (let name of names) {
+      freq[name]++;
+    }
+  }
+
+  for (let name of NAMES) {
+    if (freq[name] == 0) {
+      return false;
+    }
+  }
+  console.log(freq);
+  return true;
 }
