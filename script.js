@@ -2,12 +2,11 @@ const ROLES = ["Lead", "Response", "Reading", "Intercess"];
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
-const NAMES = ["Joel", "Mike", "Dion", "Gareth", "Jiahao", "Haroun", "Julian", "Eugene", "Timothy", "Krysten", "Jordon"]
-
 function loadNames() {
+  const DEFAULT_NAMES = ["Joel", "Mike", "Dion", "Gareth", "Jiahao", "Haroun", "Julian", "Eugene", "Timothy", "Krysten", "Jordon"]
   let initStr = "";
-  for (let i = 0; i < NAMES.length; i++) {
-    initStr = initStr.concat(NAMES.at(i), "\n");
+  for (let i = 0; i < DEFAULT_NAMES.length; i++) {
+    initStr = initStr.concat(DEFAULT_NAMES.at(i), "\n");
   }
   const textarea = document.querySelector("textarea");
   textarea.value = initStr;
@@ -44,12 +43,16 @@ function handleGenerateWeek() {
   let isAtLeastOnce = false;
   let tables = [];
   while (!isAtLeastOnce) {
-    tables = [];
-    for (let i = 0; i < DAYS.length; i++) {
+    tables = [createTable(names, DAYS.at(0))];
+    let i = 1
+    while (i < DAYS.length) {
       const table = createTable(names, DAYS.at(i));
-      tables.push(table);
+      if (names.length < 8 || !hasConsecutives(table, tables.at(i-1))) {
+        tables.push(table);
+        i++;
+      }
     }
-    isAtLeastOnce = atLeastOnce(tables);
+    isAtLeastOnce = atLeastOnce(tables, names);
   }
 
   for (let table of tables) {
@@ -121,7 +124,7 @@ function showErrorMessage(error) {
   errorArea.appendChild(errorMessage);
 }
 
-function atLeastOnce(tables) {
+function atLeastOnce(tables, NAMES) {
   let freq = {};
   for (let name of NAMES) {
     freq[name] = 0;
@@ -130,7 +133,6 @@ function atLeastOnce(tables) {
   for (let table of tables) {
     const nameCells = Array.from(table.getElementsByClassName("name"));
     const names = nameCells.map((x) => x.textContent);
-    console.log(names);
     for (let name of names) {
       freq[name]++;
     }
@@ -143,4 +145,13 @@ function atLeastOnce(tables) {
   }
   console.log(freq);
   return true;
+}
+
+function hasConsecutives(table1, table2) {
+  const nameSet1 = new Set(Array.from(table1.getElementsByClassName("name")).map((x) => x.textContent));
+  const nameSet2 = new Set(Array.from(table2.getElementsByClassName("name")).map((x) => x.textContent));
+  if (nameSet1.intersection(nameSet2).size != 0) {
+    return true;
+  }
+  return false;
 }
