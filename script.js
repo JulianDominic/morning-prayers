@@ -41,18 +41,20 @@ function handleGenerateWeek() {
   }
 
   let isAtLeastOnce = false;
+  let leadMoreThanOnce = false;
   let tables = [];
-  while (!isAtLeastOnce) {
+  while (!isAtLeastOnce || !leadMoreThanOnce) {
     tables = [createTable(names, DAYS.at(0))];
     let i = 1
     while (i < DAYS.length) {
       const table = createTable(names, DAYS.at(i));
-      if (names.length < 8 || !hasConsecutives(table, tables.at(i-1))) {
+      if (names.length < 8 || !hasConsecutives(table, tables.at(i - 1))) {
         tables.push(table);
         i++;
       }
     }
     isAtLeastOnce = atLeastOnce(tables, names);
+    leadMoreThanOnce = names.length < 5 || noLeadMoreThanOnce(tables);
   }
 
   for (let table of tables) {
@@ -75,18 +77,19 @@ function clearTables(outputArea) {
   }
 }
 
-function createTable(names, headerText="Today") {
+function createTable(names, headerText = "Today") {
   const table = document.createElement("table");
-  
+
   const header = document.createElement("th");
   header.textContent = headerText;
   header.colSpan = 2;
   table.appendChild(header);
-  
+
   let blockedNames = [];
   for (let i = 0; i < ROLES.length; i++) {
     const row = document.createElement("tr");
     const roleCell = document.createElement("td");
+    roleCell.className = ROLES.at(i);
     roleCell.textContent = ROLES.at(i);
 
     const nameCell = document.createElement("td");
@@ -112,7 +115,7 @@ function getRandomName(names, blockedNames) {
 
 function showErrorMessage(error) {
   var errorArea = document.getElementById("error");
-  
+
   let currentErrors = Array.from(errorArea.children);
   for (let i = 0; i < currentErrors.length; i++) {
     errorArea.removeChild(currentErrors.at(i));
@@ -143,7 +146,6 @@ function atLeastOnce(tables, NAMES) {
       return false;
     }
   }
-  console.log(freq);
   return true;
 }
 
@@ -154,4 +156,19 @@ function hasConsecutives(table1, table2) {
     return true;
   }
   return false;
+}
+
+function noLeadMoreThanOnce(tables) {
+  let freq = {};
+  for (let table of tables) {
+    const leadName = table.getElementsByClassName("Lead")[0].parentElement.getElementsByClassName("name")[0].textContent;
+    if (freq[leadName] === undefined) {
+      freq[leadName] = 1;
+    } else {
+      // freq[leadName]++;
+      // console.log(freq);
+      return false;
+    }
+  }
+  return true;
 }
