@@ -3,7 +3,7 @@ const ROLES = ["Lead", "Response", "Reading", "Intercess"];
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
 function loadNames() {
-  const DEFAULT_NAMES = ["Joel", "Mike", "Dion", "Gareth", "Jiahao", "Haroun", "Julian", "Eugene", "Timothy", "Krysten", "Jordon"]
+  const DEFAULT_NAMES = ["Joel", "Mike", "Dion", "Gareth", "Jiahao", "Haroun", "Julian", "Eugene", "Timothy", "Krysten", "Jordon", "Joelle"]
   let initStr = "";
   for (let i = 0; i < DEFAULT_NAMES.length; i++) {
     initStr = initStr.concat(DEFAULT_NAMES.at(i), "\n");
