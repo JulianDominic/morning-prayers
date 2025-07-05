@@ -2,6 +2,8 @@ const ROLES = ["Lead", "Response", "Reading", "Intercess"];
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
+const OFFICE_DAYS = ["Tuesday", "Thursday"]
+
 function loadNames() {
   const DEFAULT_NAMES = ["Joel", "Mike", "Dion", "Gareth", "Jiahao", "Haroun", "Julian", "Eugene", "Timothy", "Krysten", "Jordon", "Joelle"]
   let initStr = "";
@@ -93,7 +95,10 @@ function createTable(names, headerText = "Today") {
     roleCell.textContent = ROLES.at(i);
 
     const nameCell = document.createElement("td");
-    const randomName = getRandomName(names, blockedNames);
+    let randomName = getRandomName(names, blockedNames);
+    if (ROLES.at(i) == "Response" && OFFICE_DAYS.includes(headerText)) {
+      randomName = '-';
+    }
     nameCell.className = "name";
     nameCell.textContent = randomName;
     blockedNames.push(randomName);
@@ -130,6 +135,7 @@ function showErrorMessage(error) {
 function atLeastOnce(tables, NAMES) {
   let freq = {};
   for (let name of NAMES) {
+    if (name == '-') continue;
     freq[name] = 0;
   }
 
@@ -137,6 +143,7 @@ function atLeastOnce(tables, NAMES) {
     const nameCells = Array.from(table.getElementsByClassName("name"));
     const names = nameCells.map((x) => x.textContent);
     for (let name of names) {
+      if (name == '-') continue;
       freq[name]++;
     }
   }
