@@ -5,7 +5,7 @@ const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 const OFFICE_DAYS = ["Tuesday", "Thursday"]
 
 function loadNames() {
-  const DEFAULT_NAMES = ["Joel", "Mike", "Dion", "Jiahao", "Haroun", "Julian", "Joelle", "Justin"]
+  const DEFAULT_NAMES = ["Joel", "Mike", "Dion", "Justin"]
   let initStr = "";
   for (let i = 0; i < DEFAULT_NAMES.length; i++) {
     initStr = initStr.concat(DEFAULT_NAMES.at(i), "\n");
